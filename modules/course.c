@@ -1,98 +1,37 @@
 #include <stdio.h>
 #include <string.h>
-#include "courseResult.h"
+#include "course.h"
 
-Course nullCourse = {"NULL", "NULL", 0.0, 0};
+const char null_course_code[] = "NULL";
 
-CourseResult createCourseResult(Course *course, double marks)
+Course createCourse(char code[], char name[], double credit, int semester)
 {
-    CourseResult result;
-    result.course = course;
-    result.marks = marks;
-    return result;
+    Course course;
+
+    strcpy(course.code, code);
+    strcpy(course.name, name);
+    course.credit = credit;
+    course.semester = semester;
+
+    return course;
 }
-
-void sortCourseResultsBySemester(CourseResult results[], int n_results)
-{
-    for (int i = 0; i < n_results - 1; i++)
-    {
-        int selected = i;
-
-        for (int j = i + 1; j < n_results; j++)
-        {
-            if (results[j].course->semester < results[selected].course->semester)
-            {
-               selected = j;
-            }
-        }
-        if (selected != i)
-        {
-            CourseResult temporary = results[i];
-            results[i] = results[selected];
-            results[selected] = temporary;
-        }
-    }
-}
-
-int lowerBound(CourseResult results[], int n_results, int semester)
-{
-    int l = 0, r = n_results - 1, mid;
-
-    while (l <= r)
-    {
-        mid = (l + r) / 2;
-        if (results[mid].course->semester >= semester) r = mid - 1;
-        else l = mid + 1;
-    }
-
-    return l;
-}
-
-int upperBound(CourseResult results[], int n_results, int semester)
-{
-    int l = 0, r = n_results - 1, mid;
-
-    while (l <= r)
-    {
-        mid = (l + r) / 2;
-
-        if (results[mid].course->semester > semester) r = mid - 1;
-        else l = mid + 1;
-    }
-
-    return l;
-}
-
-void filterCourseResultsBySemester(CourseResult results[], int n_results, int semester, CourseResult filtered[])
-{
-    int start = lowerBound(results, n_results, semester);
-    int finish = upperBound(results, n_results, semester);
-    int count = 0;
-
-    for (int i = start; i < finish; i++)
-    {
-        filtered[count] = results[i];
-        count++;
-    }
-
-    filtered[count] = createCourseResult(&nullCourse, 0.0);
-}
-
-int countCourseResultsBeforeNull(CourseResult results[], int n_results)
+int countCoursesBeforeNull(Course courses[], int n_courses)
 {
     int count = 0;
 
-    while (count < n_results)
+    while (count < n_courses)
     {
-        if (strcmp(results[count].course->code, null_course_code) == 0) return count;
+        if (strcmp(courses[count].code, null_course_code) == 0) return count;
         count++;
     }
 
     return count;
 }
 
-void viewCourseResult(CourseResult result)
+void viewCourse(Course course)
 {
-    printf("%s: %s\t\t [Credit: %.1f]\n", result.course->code, result.course->name, result.course->credit);
-    printf("Marks: %.2f\n", result.marks);
+    printf("Code: %s\n", course.code);
+    printf("Name: %s\n", course.name);
+    printf("Credit: %.1f\n", course.credit);
+    printf("Semester: %d\n", course.semester);
 }
