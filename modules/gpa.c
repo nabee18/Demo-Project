@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include "course.h"
+#include "courseResult.h"
 #include "gpa.h"
 
 const double gradeBoundaries[] = {80, 75, 70, 65, 60, 55, 50, 45, 40};
