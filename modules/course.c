@@ -15,6 +15,7 @@ Course createCourse(char code[], char name[], double credit, int semester)
 
     return course;
 }
+
 int countCoursesBeforeNull(Course courses[], int n_courses)
 {
     int count = 0;
